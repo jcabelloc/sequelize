@@ -6,10 +6,10 @@
         <main class="centered">
             <h1><%= producto.nombre %></h1>
             <hr>
-            <div>
+            <div class="image">
                 <img src="<%= producto.urlImagen %>" alt="<%= producto.imagen %>">
             </div>
-            <h2><%= producto.precio %></h2>
+            <h2>S/ <%= producto.precio %></h2>
             <p><%= producto.descripcion %></p>
             <%- include('../includes/agregar-al-carrito.ejs') %>
         </main>
