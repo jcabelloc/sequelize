@@ -10,6 +10,8 @@ const errorController = require('./controllers/error');
 const sequelize = require('./utils/database');
 const Producto = require('./models/producto');
 const Usuario = require('./models/usuario');
+const Carrito = require('./models/carrito');
+const CarritoItem = require('./models/carrito-item');
 
 
 const adminRoutes = require('./routes/admin');
@@ -41,10 +43,14 @@ app.use(errorController.get404);
 
 Producto.belongsTo(Usuario, { constraints: true, onDelete: 'CASCADE' });
 Usuario.hasMany(Producto);
+Usuario.hasOne(Carrito);
+Carrito.belongsTo(Usuario);
+Carrito.belongsToMany(Producto, { through: CarritoItem });
+Producto.belongsToMany(Carrito, { through: CarritoItem });
 
 sequelize
-  // .sync({ force: true })
-  .sync()
+   .sync({ force: true })
+  //.sync()
   .then(result => {
     return Usuario.findByPk(1);
     // console.log(result);
