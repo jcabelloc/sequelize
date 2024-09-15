@@ -12,6 +12,8 @@ const Producto = require('./models/producto');
 const Usuario = require('./models/usuario');
 const Carrito = require('./models/carrito');
 const CarritoItem = require('./models/carrito-item');
+const Pedido = require('./models/pedido');
+const PedidoItem = require('./models/pedido-item');
 
 
 const adminRoutes = require('./routes/admin');
@@ -47,6 +49,10 @@ Usuario.hasOne(Carrito);
 Carrito.belongsTo(Usuario);
 Carrito.belongsToMany(Producto, { through: CarritoItem });
 Producto.belongsToMany(Carrito, { through: CarritoItem });
+Pedido.belongsTo(Usuario);
+Usuario.hasMany(Pedido);
+Pedido.belongsToMany(Producto, { through: PedidoItem });
+
 
 sequelize
   //.sync({ force: true })

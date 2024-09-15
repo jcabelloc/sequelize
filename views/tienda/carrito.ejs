@@ -18,6 +18,13 @@
                         </li>
                     <% }) %>
                 </ul>
+                <br>
+                <hr>
+                <div class="centered">
+                    <form action="/crear-pedido" method="POST">
+                        <button type="submit" class="btn">Confirmar Pedido!</button>
+                    </form>
+                </div>
             <% } else { %>
                 <h1>No hay productos en el carrito!</h1>
             <% } %>
