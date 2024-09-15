@@ -32,25 +32,24 @@ exports.postCrearProducto = (req, res, next) => {
 
 exports.getEditarProducto = (req, res, next) => {
   const modoEdicion = req.query.editar;
-  console.log(req.query)
   if (!modoEdicion) {
     return res.redirect('/');
   }
   const idProducto = req.params.idProducto;
   req.usuario
-  .getProductos({ where: { id: idProducto } })
-  .then(productos => {
-    const producto = productos[0];
-    if (!producto) {
-      return res.redirect('/');
-    }
-    res.render('admin/editar-producto', {
-      titulo: 'Editar Producto',
-      path: '/admin/edit-producto',
-      modoEdicion: true,
-      producto: producto
-    });
-  })
+    .getProductos({ where: { id: idProducto } })
+    .then(productos => {
+      const producto = productos[0];
+      if (!producto) {
+        return res.redirect('/');
+      }
+      res.render('admin/editar-producto', {
+        titulo: 'Editar Producto',
+        path: '/admin/edit-producto',
+        modoEdicion: true,
+        producto: producto
+      });
+    })
   .catch(err => console.log(err));
 };
 
@@ -61,18 +60,18 @@ exports.postEditarProducto = (req, res, next) => {
   const urlImagen = req.body.urlImagen;
   const descripcion = req.body.descripcion;
   Producto.findByPk(idProducto)
-  .then(producto => {
-    producto.nombre = nombre;
-    producto.precio = precio;
-    producto.descripcion = descripcion;
-    producto.urlImagen = urlImagen;
-    return producto.save();
-  })
-  .then(result => {
-    console.log('PRODUCTO ACTUALIZADO!');
-    res.redirect('/admin/productos');
-  })
-  .catch(err => console.log(err));
+    .then(producto => {
+      producto.nombre = nombre;
+      producto.precio = precio;
+      producto.descripcion = descripcion;
+      producto.urlImagen = urlImagen;
+      return producto.save();
+    })
+    .then(result => {
+      console.log('PRODUCTO ACTUALIZADO!');
+      res.redirect('/admin/productos');
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getProductos = (req, res, next) => {
@@ -91,12 +90,12 @@ exports.getProductos = (req, res, next) => {
 exports.postEliminarProducto = (req, res, next) => {
   const idProducto = req.body.idProducto;
   Producto.findByPk(idProducto)
-  .then(producto => {
-    return producto.destroy();
-  })
-  .then(result => {
-    console.log('PRODUCTO ELIMINADO');
-    res.redirect('/admin/productos');
-  })
-  .catch(err => console.log(err));
+    .then(producto => {
+      return producto.destroy();
+    })
+    .then(result => {
+      console.log('PRODUCTO ELIMINADO');
+      res.redirect('/admin/productos');
+    })
+    .catch(err => console.log(err));
 };

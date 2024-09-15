@@ -49,8 +49,8 @@ Carrito.belongsToMany(Producto, { through: CarritoItem });
 Producto.belongsToMany(Carrito, { through: CarritoItem });
 
 sequelize
-   .sync({ force: true })
-  //.sync()
+  //.sync({ force: true })
+  .sync()
   .then(result => {
     return Usuario.findByPk(1);
     // console.log(result);
@@ -63,6 +63,9 @@ sequelize
   })
   .then(usuario => {
     // console.log(usuario);
+    return usuario.createCarrito();
+  })
+  .then(carrito => {
     app.listen(3000);
   })
   .catch(err => {
