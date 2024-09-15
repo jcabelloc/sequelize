@@ -13,12 +13,13 @@ exports.postCrearProducto = (req, res, next) => {
   const urlImagen = req.body.urlImagen;
   const precio = req.body.precio;
   const descripcion = req.body.descripcion;
-  Producto.create({
-    nombre: nombre,
-    precio: precio,
-    urlImagen: urlImagen,
-    descripcion: descripcion
-  })
+  req.usuario
+    .createProducto({
+      nombre: nombre,
+      precio: precio,
+      urlImagen: urlImagen,
+      descripcion: descripcion
+    })
     .then(result => {
       // console.log(result);
       console.log('Producto Creado!!!');
@@ -36,8 +37,10 @@ exports.getEditarProducto = (req, res, next) => {
     return res.redirect('/');
   }
   const idProducto = req.params.idProducto;
-  Producto.findByPk(idProducto)
-  .then(producto => {
+  req.usuario
+  .getProductos({ where: { id: idProducto } })
+  .then(productos => {
+    const producto = productos[0];
     if (!producto) {
       return res.redirect('/');
     }
@@ -73,16 +76,17 @@ exports.postEditarProducto = (req, res, next) => {
 };
 
 exports.getProductos = (req, res, next) => {
-  Producto.findAll()
-  .then(productos => {
-    res.render('admin/productos', {
-      prods: productos,
-      titulo: 'Admin Productos',
-      path: '/admin/productos'
-    });
-  })
-  .catch(err => console.log(err));
-  };
+  req.usuario
+    .getProductos()
+    .then(productos => {
+      res.render('admin/productos', {
+        prods: productos,
+        titulo: 'Admin Productos',
+        path: '/admin/productos'
+      });
+    })
+    .catch(err => console.log(err));
+    };
 
 exports.postEliminarProducto = (req, res, next) => {
   const idProducto = req.body.idProducto;
