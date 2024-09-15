@@ -8,6 +8,8 @@ const bodyParser = require('body-parser')
 
 const errorController = require('./controllers/error');
 const sequelize = require('./utils/database');
+const Producto = require('./models/producto');
+const Usuario = require('./models/usuario');
 
 
 const adminRoutes = require('./routes/admin');
@@ -29,8 +31,11 @@ app.use(tiendaRoutes);
 
 app.use(errorController.get404);
 
+Producto.belongsTo(Usuario, { constraints: true, onDelete: 'CASCADE' });
+Usuario.hasMany(Producto);
+
 sequelize
-  .sync()
+  .sync({ force: true })
   .then(result => {
     //console.log(result);
     app.listen(3000);
